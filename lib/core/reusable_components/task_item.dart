@@ -1,101 +1,119 @@
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart';
+
+import '../../database_manager/model/todo_dm.dart';
+import '../../database_manager/model/user_dm.dart';
+import '../my_text_styles.dart';
 
 class TaskItem extends StatelessWidget {
-  const TaskItem({super.key});
+  Function onDeleteTask;
+  TaskItem({super.key, required this.todo,required this.onDeleteTask});
+
+   TodoDm todo;
 
   @override
   Widget build(BuildContext context) {
+    // Convert Timestamp to DateTime, ensuring correct timezone handling
+    DateTime dateTime = todo.date.toDate();
+    // Format DateTime as a readable string with 12-hour format and AM/PM
+    String formattedDate = DateFormat('yyyy-MM-dd / hh:mm a').format(dateTime);  
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        color: Colors.white,
+        color: Theme.of(context).indicatorColor,
       ),
-
-      margin: EdgeInsets.symmetric(horizontal: 18,vertical: 25),
+      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
       child: Slidable(
-        startActionPane:  ActionPane(
+        startActionPane: ActionPane(
           extentRatio: 0.2,
-          // A motion is a widget used to control how the pane animates.
           motion: const DrawerMotion(),
-
-          children:  [
-
+          children: [
             SlidableAction(
               borderRadius: BorderRadius.circular(15),
               onPressed: (context) {
-
+                deleteTask();
+                onDeleteTask();
               },
-              backgroundColor: Color(0xFFFE4A49),
-              foregroundColor: Colors.white,
+              backgroundColor: Theme.of(context).cardColor,
+              foregroundColor: Theme.of(context).primaryColorDark,
               icon: Icons.delete,
               label: 'Delete',
               autoClose: true,
             ),
-
           ],
         ),
-
         endActionPane: ActionPane(
           extentRatio: 0.2,
-          // A motion is a widget used to control how the pane animates.
           motion: const DrawerMotion(),
-
-          children:  [
-
+          children: [
             SlidableAction(
               autoClose: true,
               borderRadius: BorderRadius.circular(15),
-              onPressed: (context) {
-
-              },
-              backgroundColor: Theme.of(context).primaryColor,
+              onPressed: (context) {},
+              backgroundColor: Theme.of(context).disabledColor,
               foregroundColor: Colors.white,
               icon: Icons.edit,
               label: 'Edit',
             ),
-
           ],
         ),
-
         child: Card(
+          shape: RoundedRectangleBorder(
 
+            borderRadius: BorderRadius.circular(15),
+
+          ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 18,horizontal: 16),
+            padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
-                  color: Theme.of(context).dividerColor,
+                  color: Theme.of(context).primaryColorLight,
                   width: 4,
                   height: 60,
-
                 ),
-                const SizedBox(width: 25,),
-                 Column(
+                const SizedBox(width: 25),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start, // Align to start
                   children: [
-                    Text("HELLO",style: Theme.of(context).textTheme.titleMedium,),
-                    SizedBox(height: 10,),
+                    Text(
+                      todo.title,
+                      style: MyTextStyles.lightTaskTitle?.copyWith(fontSize: 20),
+                    ),
+                    SizedBox(height: 7),
+                    Text(
+                      todo.description,
+                      style: MyTextStyles.lightTaskTitle?.copyWith(fontSize: 16),
+                    ),
+                    const SizedBox(height: 10),
                     Row(
                       children: [
-                        Icon(Icons.access_time),
-                        SizedBox(width: 3,),
-                        Text("10:30",style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.black,fontWeight:FontWeight.w600,fontSize: 16),),
-
+                        const Icon(Icons.access_time, color: Colors.white),
+                        const SizedBox(width: 3),
+                        Text(
+                          formattedDate,
+                          style: MyTextStyles.lightDateStyle?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                          ),
+                        ),
                       ],
-                    )
+                    ),
                   ],
                 ),
-                Spacer(),
-
+                const Spacer(),
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 3,horizontal: 14),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Icon(Icons.check,size: 28,color: Colors.white,)),
+                  padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 14),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColorLight,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(Icons.check, size: 28, color: Theme.of(context).hintColor),
+                ),
               ],
             ),
           ),
@@ -103,4 +121,10 @@ class TaskItem extends StatelessWidget {
       ),
     );
   }
+
+  void deleteTask()async {
+   var tasksCollection= FirebaseFirestore.instance.collection(UserDm.collectionName).doc(UserDm.userDm!.id).collection(TodoDm.collectionName);
+ await tasksCollection.doc(todo.id).delete();
+  }
+
 }

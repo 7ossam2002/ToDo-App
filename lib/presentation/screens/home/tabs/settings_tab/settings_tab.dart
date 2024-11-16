@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:todo/core/colors_manager.dart';
+import 'package:todo/core/my_text_styles.dart';
 
 class SettingsTab extends StatefulWidget {
   const SettingsTab({super.key});
@@ -21,7 +23,7 @@ class _SettingsTabState extends State<SettingsTab> {
           const SizedBox(height: 10),
           Text(
             "Theme",
-            style: Theme.of(context).textTheme.labelSmall,
+            style: MyTextStyles.settingsItemTextStyles,
           ),
           const SizedBox(height: 10),
           Container(
@@ -29,7 +31,7 @@ class _SettingsTabState extends State<SettingsTab> {
             height: 56,
             decoration: BoxDecoration(
               color: Theme.of(context).indicatorColor,
-              border: Border.all(color: Theme.of(context).dividerColor, width: 2),
+              border: Border.all(color: Theme.of(context).dialogBackgroundColor, width: 2),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Padding(
@@ -38,10 +40,7 @@ class _SettingsTabState extends State<SettingsTab> {
                 children: [
                   Text(
                     selectedTheme ?? "",
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14,
-                        color: Theme.of(context).dividerColor),
+                    style:MyTextStyles.dropDownItems?.copyWith(color: Theme.of(context).dialogBackgroundColor),
                   ),
                   const Spacer(),
                   DropdownButton<String>(
@@ -68,7 +67,7 @@ class _SettingsTabState extends State<SettingsTab> {
           const SizedBox(height: 15),
           Text(
             "Language",
-            style: Theme.of(context).textTheme.labelSmall,
+            style: MyTextStyles.settingsItemTextStyles,
           ),
           const SizedBox(height: 10),
           Container(
@@ -76,7 +75,7 @@ class _SettingsTabState extends State<SettingsTab> {
             height: 56,
             decoration: BoxDecoration(
               color: Theme.of(context).indicatorColor,
-              border: Border.all(color: Theme.of(context).dividerColor, width: 2),
+              border: Border.all(color: Theme.of(context).dialogBackgroundColor, width: 2),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Padding(
@@ -85,10 +84,7 @@ class _SettingsTabState extends State<SettingsTab> {
                 children: [
                   Text(
                     selectedLang??"",
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14,
-                        color: Theme.of(context).dividerColor),
+                    style: MyTextStyles.dropDownItems?.copyWith(color: Theme.of(context).dialogBackgroundColor),
                   ),
 
                   const Spacer(),
