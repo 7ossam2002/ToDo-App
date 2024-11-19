@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/core/colors_manager.dart';
-import 'package:todo/core/my_text_styles.dart';
+import '../../../../../provider/language_provider.dart';
+import '../../../../../provider/theme_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class SettingsTab extends StatefulWidget {
-  const SettingsTab({super.key});
-
-  @override
-  _SettingsTabState createState() => _SettingsTabState();
-}
-
-class _SettingsTabState extends State<SettingsTab> {
-  String? selectedTheme = "Light"; // Default value for the dropdown
-  String? selectedLang = "English"; // Default value for the dropdown
-
+class SettingsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
+    final langProvider = Provider.of<LanguageProvider>(context, listen: true);
+    final localizations = AppLocalizations.of(context);
+
+    // Check if AppLocalizations is null
+    if (localizations == null) {
+      return Center(child: Text("Localization failed to load!"));
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: Column(
@@ -22,8 +24,8 @@ class _SettingsTabState extends State<SettingsTab> {
         children: [
           const SizedBox(height: 10),
           Text(
-            "Theme",
-            style: MyTextStyles.settingsItemTextStyles,
+            localizations.theme,
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: Theme.of(context).primaryColorLight),
           ),
           const SizedBox(height: 10),
           Container(
@@ -31,43 +33,56 @@ class _SettingsTabState extends State<SettingsTab> {
             height: 56,
             decoration: BoxDecoration(
               color: Theme.of(context).indicatorColor,
-              border: Border.all(color: Theme.of(context).dialogBackgroundColor, width: 2),
+              border: Border.all(
+                color: Theme.of(context).dialogBackgroundColor,
+                width: 2,
+              ),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 16),
               child: Row(
                 children: [
+                  // The selected theme text
                   Text(
-                    selectedTheme ?? "",
-                    style:MyTextStyles.dropDownItems?.copyWith(color: Theme.of(context).dialogBackgroundColor),
+                    themeProvider.isSelectedLight()
+                        ? localizations.light
+                        : localizations.dark,
+                    style: TextStyle(fontSize: 18,fontWeight: FontWeight.w700,color: Theme.of(context).dialogBackgroundColor),
                   ),
-                  const Spacer(),
-                  DropdownButton<String>(
-                    elevation: 0,
-                    isExpanded: false,
-                    underline: Container(),
-                    items: <String>['Light', 'Dark'].map((String value) {
-                      selectedTheme=value;
-                      return DropdownMenuItem<String>(
-                        value: selectedTheme,
-                        child: Text(selectedTheme??""),
+                  Spacer(),
+                  // The arrow icon on the right side to trigger dropdown
+                  PopupMenuButton<String>(
+                    onSelected: (String value) {
+                      themeProvider.changeAppTheme(
+                        value == localizations.light
+                            ? ThemeMode.light
+                            : ThemeMode.dark,
                       );
-                    }).toList(),
-                    onChanged: (newTheme) {
-                      setState(() {
-                        selectedTheme = newTheme;
-                      });
                     },
+                    itemBuilder: (BuildContext context) {
+                      return [
+                        PopupMenuItem<String>(
+                          value: localizations.light,
+                          child: Text(localizations.light),
+                        ),
+                        PopupMenuItem<String>(
+                          value: localizations.dark,
+                          child: Text(localizations.dark),
+                        ),
+                      ];
+                    },
+                    color: ColorsManager.whiteColor, // Set background color of the dropdown
+                    child: Icon(Icons.arrow_drop_down, color: Theme.of(context).hintColor),
                   ),
                 ],
               ),
             ),
           ),
-          const SizedBox(height: 15),
+          const SizedBox(height: 20),
           Text(
-            "Language",
-            style: MyTextStyles.settingsItemTextStyles,
+            localizations.language,
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: Theme.of(context).primaryColorLight),
           ),
           const SizedBox(height: 10),
           Container(
@@ -75,35 +90,43 @@ class _SettingsTabState extends State<SettingsTab> {
             height: 56,
             decoration: BoxDecoration(
               color: Theme.of(context).indicatorColor,
-              border: Border.all(color: Theme.of(context).dialogBackgroundColor, width: 2),
+              border: Border.all(
+                color: Theme.of(context).dialogBackgroundColor,
+                width: 2,
+              ),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 16),
               child: Row(
                 children: [
+                  // The selected language text
                   Text(
-                    selectedLang??"",
-                    style: MyTextStyles.dropDownItems?.copyWith(color: Theme.of(context).dialogBackgroundColor),
+                    langProvider.isSelectedEnglish()
+                        ? localizations.english
+                        : localizations.arabic,
+                    style: TextStyle(fontSize: 18,fontWeight: FontWeight.w700,color: Theme.of(context).dialogBackgroundColor),
                   ),
-
-                  const Spacer(),
-                  DropdownButton<String>(
-                    elevation: 0,
-                    isExpanded: false,
-                    underline: Container(),
-                    items: <String>['Arabic', 'English'].map((String value) {
-                      selectedLang=value;
-                      return DropdownMenuItem<String>(
-                        value: selectedLang,
-                        child: Text(selectedLang??""),
-                      );
-                    }).toList(),
-                    onChanged: (newLang) {
-                      setState(() {
-                        selectedLang = newLang;
-                      });
+                  Spacer(),
+                  // The arrow icon on the right side to trigger dropdown
+                  PopupMenuButton<String>(
+                    onSelected: (String value) {
+                      langProvider.changeAppLang(value == localizations.english ? 'en' : 'ar');
                     },
+                    itemBuilder: (BuildContext context) {
+                      return [
+                        PopupMenuItem<String>(
+                          value: localizations.english,
+                          child: Text(localizations.english),
+                        ),
+                        PopupMenuItem<String>(
+                          value: localizations.arabic,
+                          child: Text(localizations.arabic),
+                        ),
+                      ];
+                    },
+                    color: Colors.white, // Set background color of the dropdown
+                    child: Icon(Icons.arrow_drop_down, color: Theme.of(context).hintColor),
                   ),
                 ],
               ),

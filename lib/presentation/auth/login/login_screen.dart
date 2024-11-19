@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,11 +6,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:todo/core/routes_manager.dart';
 import 'package:todo/core/strings_manager.dart';
 import 'package:todo/database_manager/model/user_dm.dart';
-
 import '../../../core/constant_manager.dart';
 import '../../../core/images_manager.dart';
 import '../../../core/reusable_components/custom_text_form_field.dart';
 import '../../../core/utiles/dialog_utiles.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginScreen extends StatelessWidget {
    LoginScreen({super.key});
@@ -42,12 +40,13 @@ class LoginScreen extends StatelessWidget {
 
 
               SizedBox(height: 15,),
-              Text("e-mail",style: GoogleFonts.poppins(color: Colors.white,fontWeight: FontWeight.w400,fontSize: 14),),
+              Text(AppLocalizations.of(context)!.email,style: GoogleFonts.poppins(color: Colors.white,fontWeight: FontWeight.w400,fontSize: 14),),
               SizedBox(height: 8,),
-              CustomTextFormField(hintText: "enter your e-mail", validator: (input) {
+              CustomTextFormField(hintText: AppLocalizations.of(context)!.enter_your_email, validator: (input){
                 if(input==null||input.trim().isEmpty){
                   return "please enter your e-mail";
                 }
+                return null;
 
               },
                 controller: emailController,
@@ -55,9 +54,9 @@ class LoginScreen extends StatelessWidget {
               ),
               /////////////////////////
               SizedBox(height: 15,),
-              Text("password",style: GoogleFonts.poppins(color: Colors.white,fontWeight: FontWeight.w400,fontSize: 14),),
+              Text(AppLocalizations.of(context)!.password,style: GoogleFonts.poppins(color: Colors.white,fontWeight: FontWeight.w400,fontSize: 14),),
               SizedBox(height: 8,),
-              CustomTextFormField(hintText: "enter your password", validator: (input) {
+              CustomTextFormField(hintText: AppLocalizations.of(context)!.enter_your_password, validator: (input) {
                 if(input==null||input.trim().isEmpty){
                   return "please enter your password";
                 }
@@ -81,8 +80,8 @@ class LoginScreen extends StatelessWidget {
                     onPressed: (){
                       signIn(context);
                     }, child:Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Text("Login",style: GoogleFonts.poppins(color: Color(0xFF004182),fontSize: 20,fontWeight: FontWeight.w600),),
+                  padding:  EdgeInsets.symmetric(vertical: 10),
+                  child: Text(AppLocalizations.of(context)!.sign_in,style: GoogleFonts.poppins(color: Color(0xFF004182),fontSize: 20,fontWeight: FontWeight.w600),),
                 ) ),
               ),
                Center(
@@ -90,12 +89,12 @@ class LoginScreen extends StatelessWidget {
                              mainAxisAlignment: MainAxisAlignment.center,
                   children: [
 
-                    const Text("don’t have account ? ",style: TextStyle(color: Colors.white,),),
+                     Text(AppLocalizations.of(context)!.dont_have_account,style: TextStyle(color: Colors.white,),),
                     InkWell(
                       onTap: (){
                         Navigator.of(context).pushReplacementNamed(RoutesManager.registerRoute);
                       },
-                      child: const Text(StringsManager.signUp,style: TextStyle(color: Colors.red,decoration: TextDecoration.underline),),
+                      child:  Text(AppLocalizations.of(context)!.sign_up,style: TextStyle(color: Colors.red,decoration: TextDecoration.underline),),
                     ),
 
 
