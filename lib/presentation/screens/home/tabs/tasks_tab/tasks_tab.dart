@@ -6,6 +6,7 @@ import 'package:todo/core/my_text_styles.dart';
 import 'package:todo/database_manager/model/todo_dm.dart';
 import '../../../../../core/reusable_components/task_item.dart';
 import '../../../../../database_manager/model/user_dm.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TasksTab extends StatefulWidget {
   TasksTab({super.key});
@@ -26,60 +27,60 @@ class TasksTabState extends State<TasksTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: EasyDateTimeLine(
-              initialDate: selectedDate,
-              onDateChange: (newDate) {
-                setState(() {
-                  selectedDate = newDate;
-                  readTodoFromFireStore(); // Re-fetch tasks for the new date
-                });
-              },
-              headerProps: EasyHeaderProps(
-                monthStyle: TextStyle(color: ColorsManager.blueColor),
-                selectedDateStyle: MyDarkTextStyles.darkTaskTitle,
-                monthPickerType: MonthPickerType.dropDown,
-                dateFormatter: DateFormatter.fullDateDMY(),
-              ),
-              dayProps: EasyDayProps(
-                dayStructure: DayStructure.dayStrDayNum,
-                activeDayStyle: DayStyle(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: ColorsManager.blueColor,
-                  ),
+    return Column(
+      children: [
+        const SizedBox(height: 20),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: EasyDateTimeLine(
+            initialDate: selectedDate,
+            onDateChange: (newDate) {
+              setState(() {
+                selectedDate = newDate;
+                readTodoFromFireStore(); // Re-fetch tasks for the new date
+              });
+            },
+            headerProps: EasyHeaderProps(
+              monthStyle: TextStyle(color: Theme.of(context).dialogBackgroundColor),
+              selectedDateStyle: TextStyle(color: Theme.of(context).dialogBackgroundColor,fontSize: 17,fontWeight: FontWeight.w700),
+              monthPickerType: MonthPickerType.dropDown,
+              dateFormatter: DateFormatter.fullDateDMY(),
+            ),
+            dayProps: EasyDayProps(
+              dayStructure: DayStructure.dayStrDayNum,
+              activeDayStyle: DayStyle(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Theme.of(context).dialogBackgroundColor
                 ),
-                inactiveDayStyle: DayStyle(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: ColorsManager.greyColor,
-                  ),
-                  dayStrStyle: TextStyle(color: ColorsManager.blueColor),
-                  dayNumStyle: TextStyle(
-                    color: ColorsManager.blueColor,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                  ),
+              ),
+              inactiveDayStyle: DayStyle(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: ColorsManager.greyColor,
+                ),
+                dayStrStyle: TextStyle(color: Theme.of(context).dialogBackgroundColor),
+                dayNumStyle: TextStyle(
+                  color: Theme.of(context).dialogBackgroundColor,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),
           ),
-          Expanded(
-            child: todos.isEmpty
-                ? Center(child: Text("No tasks available",style: MyTextStyles.cardTextStyles,))
-                : ListView.builder(
-              physics: BouncingScrollPhysics(),
-              itemBuilder: (context, index) => TaskItem(todo: todos[index],onDeleteTask: (){readTodoFromFireStore();},),
-              itemCount: todos.length,
-            ),
+        ),
+        Expanded(
+          child: todos.isEmpty
+              ? Center(child: Text(AppLocalizations.of(context)!.noTasks,style: TextStyle(
+            color: Theme.of(context).dialogBackgroundColor,fontSize: 20,fontWeight: FontWeight.w700
+          ),))
+              : ListView.builder(
+            physics: BouncingScrollPhysics(),
+            itemBuilder: (context, index) => TaskItem(todo: todos[index],onDeleteTask: (){readTodoFromFireStore();},),
+            itemCount: todos.length,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

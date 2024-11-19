@@ -20,10 +20,10 @@ class MyTheme{
       color: ColorsManager.deepPurColor,
     ),
     secondaryHeaderColor: ColorsManager.blueColor,
-    primaryColorLight: ColorsManager.whiteColor,
+    primaryColorLight: ColorsManager.blackColor,
       hintColor: ColorsManager.blueColor,
       cardColor: Colors.red,
-      disabledColor: Colors.green,
+      disabledColor: ColorsManager.blueColor,
       primaryColorDark: Colors.white,
       dialogBackgroundColor: ColorsManager.blueColor,
 
@@ -103,7 +103,7 @@ class MyTheme{
       dialogBackgroundColor: ColorsManager.darkTask,
       hoverColor: ColorsManager.blackColor,
       cardColor: Colors.white,
-      disabledColor: ColorsManager.blueColor,
+      disabledColor: Colors.red,
       primaryColorDark: Colors.red,
 
     dividerColor: ColorsManager.blueColor,
@@ -116,7 +116,7 @@ class MyTheme{
       titleTextStyle: MyTextStyles.appBarTextStyles,
 
     ),
-      primaryColorLight: Colors.white,
+      primaryColorLight: ColorsManager.whiteColor,
       hintColor: ColorsManager.darkTask,
 
       scaffoldBackgroundColor: ColorsManager.darkCardColor,

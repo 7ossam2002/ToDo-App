@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:todo/core/colors_manager.dart';
 import '../../database_manager/model/todo_dm.dart';
 import '../../database_manager/model/user_dm.dart';
+import '../../presentation/screens/home/update_task/update_task.dart';
 import '../my_text_styles.dart';
 
 class TaskItem extends StatelessWidget {
@@ -40,7 +42,7 @@ class TaskItem extends StatelessWidget {
               backgroundColor: Theme.of(context).cardColor,
               foregroundColor: Theme.of(context).primaryColorDark,
               icon: Icons.delete,
-              label: 'Delete',
+              label: AppLocalizations.of(context)!.delete,
               autoClose: true,
             ),
           ],
@@ -52,11 +54,19 @@ class TaskItem extends StatelessWidget {
             SlidableAction(
               autoClose: true,
               borderRadius: BorderRadius.circular(15),
-              onPressed: (context) {},
+              onPressed: (context) {
+                // Navigator.push(
+                //   context,
+                //   // MaterialPageRoute(
+                //   //   builder: (context) => TaskDetailsPage(todoDm: selectedTask),
+                //   // ),
+                // );
+
+              },
               backgroundColor: Theme.of(context).disabledColor,
               foregroundColor: Colors.white,
               icon: Icons.edit,
-              label: 'Edit',
+              label: AppLocalizations.of(context)!.edit,
             ),
           ],
         ),
@@ -72,7 +82,7 @@ class TaskItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
-                  color: Theme.of(context).primaryColorLight,
+                  color: ColorsManager.whiteColor,
                   width: 4,
                   height: 60,
                 ),
@@ -109,7 +119,7 @@ class TaskItem extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 14),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColorLight,
+                    color: ColorsManager.whiteColor,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Icon(Icons.check, size: 28, color: Theme.of(context).hintColor),
@@ -126,5 +136,7 @@ class TaskItem extends StatelessWidget {
    var tasksCollection= FirebaseFirestore.instance.collection(UserDm.collectionName).doc(UserDm.userDm!.id).collection(TodoDm.collectionName);
  await tasksCollection.doc(todo.id).delete();
   }
+
+
 
 }
