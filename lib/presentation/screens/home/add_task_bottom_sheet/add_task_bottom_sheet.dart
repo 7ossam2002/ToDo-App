@@ -5,6 +5,7 @@ import 'package:todo/core/my_text_styles.dart';
 import 'package:todo/core/utiles/date_util.dart';
 import 'package:todo/database_manager/model/user_dm.dart';
 import '../../../../database_manager/model/todo_dm.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddTaskBottomSheet extends StatefulWidget {
   const AddTaskBottomSheet({super.key});
@@ -44,12 +45,12 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  "Add your task",
+                  AppLocalizations.of(context)!.add_new_task,
                   style: Theme
                       .of(context)
                       .textTheme
                       .headlineMedium
-                      ?.copyWith(color: ColorsManager.blueColor),
+                      ?.copyWith(color: Theme.of(context).dialogBackgroundColor),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 30),
@@ -64,7 +65,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                     return null;
                   },
                   decoration: InputDecoration(
-                    hintText: "Enter your task",
+                    hintText: AppLocalizations.of(context)!.add_new_task,
                     hintStyle: MyTextStyles.greyHint,
                   ),
                 ),
@@ -80,18 +81,18 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                     return null;
                   },
                   decoration: InputDecoration(
-                    hintText: "Add details about your task",
+                    hintText: AppLocalizations.of(context)!.add_description,
                     hintStyle: MyTextStyles.greyHint,
                   ),
                 ),
                 SizedBox(height: 30),
                 Text(
-                  "Select date",
+                  AppLocalizations.of(context)!.select_date,
                   style: Theme
                       .of(context)
                       .textTheme
                       .titleMedium
-                      ?.copyWith( fontSize: 20),
+                      ?.copyWith( fontSize: 20,color: Theme.of(context).dialogBackgroundColor),
                   //textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 10),
@@ -114,7 +115,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                   padding: const EdgeInsets.only(top: 30, left: 90, right: 90),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: ColorsManager.blueColor,
+                      backgroundColor: Theme.of(context).dialogBackgroundColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -123,7 +124,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
 
 
                     child: Text(
-                      "Add",
+                      AppLocalizations.of(context)!.add_task_button,
                       style: Theme
                           .of(context)
                           .textTheme
@@ -149,9 +150,9 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(
+            colorScheme:  ColorScheme.light(
               primary: ColorsManager.whiteColor,
-              onPrimary: ColorsManager.blueColor,
+              onPrimary: Theme.of(context).dialogBackgroundColor,
               onSurface: ColorsManager.whiteColor,
             ),
           ),

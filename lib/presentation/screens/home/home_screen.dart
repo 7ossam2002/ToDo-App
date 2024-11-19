@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:todo/core/images_manager.dart';
 import 'package:todo/presentation/screens/home/add_task_bottom_sheet/add_task_bottom_sheet.dart';
 import 'package:todo/presentation/screens/home/tabs/settings_tab/settings_tab.dart';
 import 'package:todo/presentation/screens/home/tabs/tasks_tab/tasks_tab.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,25 +12,28 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  GlobalKey<TasksTabState> tasksTapKey=GlobalKey();
-  List<Widget> tabs=[];
-@override
+  GlobalKey<TasksTabState> tasksTapKey = GlobalKey();
+  List<Widget> tabs = [];
+  int selectedIndex = 0;
+
+  @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     tabs = [
-      TasksTab(key: tasksTapKey,),
+      TasksTab(key: tasksTapKey),
       SettingsTab(),
     ];
   }
-  int selectedIndex = 0;
-  String appBarTitle = "ToDo List";
 
   @override
   Widget build(BuildContext context) {
+    // Update appBarTitle based on selectedIndex inside the build method
+    String appBarTitle = selectedIndex == 0
+        ? AppLocalizations.of(context)!.tasks
+        : AppLocalizations.of(context)!.settings;
+
     return Container(
       child: Scaffold(
-
         extendBody: true,
         appBar: AppBar(
           title: Text(appBarTitle), // Use appBarTitle here
@@ -42,16 +45,20 @@ class _HomeScreenState extends State<HomeScreen> {
             onTap: (index) {
               onButtonNavBarItem(index); // Call the function with the index argument
             },
-            items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.list), label: "Tasks"),
-              BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Settings"),
+            items: [
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.list),
+                  label: AppLocalizations.of(context)?.tasks),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.settings),
+                  label: AppLocalizations.of(context)?.settings),
             ],
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: ()async {
-           await AddTaskBottomSheet.show(context);
-           tasksTapKey.currentState?.readTodoFromFireStore();
+          onPressed: () async {
+            await AddTaskBottomSheet.show(context);
+            tasksTapKey.currentState?.readTodoFromFireStore();
           },
           child: const Icon(Icons.add, size: 30),
         ),
@@ -64,7 +71,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void onButtonNavBarItem(int index) {
     setState(() {
       selectedIndex = index;
-      appBarTitle = index == 0 ? "ToDo List" : "Settings";
     });
   }
 }

@@ -9,6 +9,7 @@ import 'package:todo/core/reusable_components/custom_text_form_field.dart';
 import 'package:todo/core/strings_manager.dart';
 import 'package:todo/core/utiles/dialog_utiles.dart';
 import 'package:todo/database_manager/model/user_dm.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/routes_manager.dart';
 class RegisterScreen extends StatelessWidget {
@@ -31,19 +32,20 @@ class RegisterScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding:  EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               SvgPicture.asset(ImagesManager.loginPage,height: 250,),
 
               SizedBox(height: 15,),
-              Text("full name",style: GoogleFonts.poppins(color: Colors.white,fontWeight: FontWeight.w400,fontSize: 14),),
+              Text(AppLocalizations.of(context)!.full_name,style: GoogleFonts.poppins(color: Colors.white,fontWeight: FontWeight.w400,fontSize: 14),),
               SizedBox(height: 8,),
-              CustomTextFormField(hintText: "enter your full name", validator: (input) {
+              CustomTextFormField(hintText: AppLocalizations.of(context)!.enter_your_full_name, validator: (input) {
                 if(input==null||input.trim().isEmpty){
                   return "please enter your full name";
                 }
+                return null;
               },
                 controller: fullNameController,
 
@@ -51,9 +53,9 @@ class RegisterScreen extends StatelessWidget {
 
               //////////////////////////
               SizedBox(height: 15,),
-              Text("user name",style: GoogleFonts.poppins(color: Colors.white,fontWeight: FontWeight.w400,fontSize: 14),),
+              Text(AppLocalizations.of(context)!.user_name,style: GoogleFonts.poppins(color: Colors.white,fontWeight: FontWeight.w400,fontSize: 14),),
               SizedBox(height: 8,),
-              CustomTextFormField(hintText: "enter your user name", validator: (input) {
+              CustomTextFormField(hintText: AppLocalizations.of(context)!.enter_your_user_name, validator: (input) {
                 if(input==null||input.trim().isEmpty){
                   return "please enter your user name";
                 }
@@ -63,9 +65,9 @@ class RegisterScreen extends StatelessWidget {
               ),
               ////////////////////////////
               SizedBox(height: 15,),
-              Text("e-mail",style: GoogleFonts.poppins(color: Colors.white,fontWeight: FontWeight.w400,fontSize: 14),),
+              Text(AppLocalizations.of(context)!.email,style: GoogleFonts.poppins(color: Colors.white,fontWeight: FontWeight.w400,fontSize: 14),),
               SizedBox(height: 8,),
-              CustomTextFormField(hintText: "enter your e-mail", validator: (input) {
+              CustomTextFormField(hintText:AppLocalizations.of(context)!.enter_your_email, validator: (input) {
                 if(input==null||input.trim().isEmpty){
                   return "please enter your e-mail";
                 }
@@ -76,9 +78,9 @@ class RegisterScreen extends StatelessWidget {
               ),
               /////////////////////////
               SizedBox(height: 15,),
-              Text("password",style: GoogleFonts.poppins(color: Colors.white,fontWeight: FontWeight.w400,fontSize: 14),),
+              Text(AppLocalizations.of(context)!.password,style: GoogleFonts.poppins(color: Colors.white,fontWeight: FontWeight.w400,fontSize: 14),),
               SizedBox(height: 8,),
-              CustomTextFormField(hintText: "enter your password", validator: (input) {
+              CustomTextFormField(hintText: AppLocalizations.of(context)!.enter_your_password, validator: (input) {
                 if(input==null||input.trim().isEmpty){
                   return "please enter your password";
                 }
@@ -89,9 +91,9 @@ class RegisterScreen extends StatelessWidget {
               ),
               ////////////////////////
               SizedBox(height: 15,),
-              Text("confirm password",style: GoogleFonts.poppins(color: Colors.white,fontWeight: FontWeight.w400,fontSize: 14),),
+              Text(AppLocalizations.of(context)!.re_password,style: GoogleFonts.poppins(color: Colors.white,fontWeight: FontWeight.w400,fontSize: 14),),
               SizedBox(height: 8,),
-              CustomTextFormField(hintText: "enter your password again", validator: (input) {
+              CustomTextFormField(hintText: AppLocalizations.of(context)!.enter_your_re_password, validator: (input) {
                 if(input==null||input.trim().isEmpty){
                   return "please enter your password";
                 }
@@ -118,8 +120,8 @@ class RegisterScreen extends StatelessWidget {
                     signUp(context);
                   //register(),
                 }, child:Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Text("Sign Up",style: GoogleFonts.poppins(color: Color(0xFF004182),fontSize: 20,fontWeight: FontWeight.w600),),
+                  padding:  EdgeInsets.symmetric(vertical: 10),
+                  child: Text(AppLocalizations.of(context)!.sign_up,style: GoogleFonts.poppins(color: Color(0xFF004182),fontSize: 20,fontWeight: FontWeight.w600),),
                 ) ),
               ),
               Center(
@@ -129,12 +131,12 @@ class RegisterScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
 
-                      const Text("Already have account ? ",style: TextStyle(color: Colors.white,),),
+                       Text(AppLocalizations.of(context)!.already_have_account,style: TextStyle(color: Colors.white,),),
                       InkWell(
                         onTap: (){
                           Navigator.of(context).pushReplacementNamed(RoutesManager.loginRoute);
                         },
-                        child: const Text(StringsManager.signIn,style: TextStyle(color: Colors.red,decoration: TextDecoration.underline),),
+                        child:  Text(AppLocalizations.of(context)!.sign_in,style: TextStyle(color: Colors.red,decoration: TextDecoration.underline),),
                       ),
 
 
